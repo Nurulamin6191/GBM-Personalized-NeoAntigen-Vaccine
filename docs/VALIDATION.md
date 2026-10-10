@@ -5,7 +5,7 @@
 |---|---|---|
 | Raw reads | ENA / fasterq-dump | SRR30677899: 15,434,896 spots / 30,869,792 reads; SRR30677902: 17,969,839 spots / 35,939,678 reads |
 | Trim (Galaxy, single-end Q20) | trimming reports | 899: R1 24.6% adapters; 902: R1 11.9%, R2 40.2%; pairs removed <1% |
-| STAR chr1 | Galaxy Log.final vs local re-run | Galaxy 13.90% uniquely mapped / local 13.91% — MATCH (83.9% vs 83.7% too-short). Validates reproducibility |
+| STAR chr1 | Galaxy Log.final vs local re-run | Galaxy 13.90% uniquely mapped / local 899: 13.91% / local 902: 13.83% — MATCH (too-short ~83.9%). Validates reproducibility |
 | Splices | Galaxy (with GTF) vs local (no GTF) | 159,301 annotated vs 0 — expected difference; mapping rate unaffected |
 | FreeBayes raw | candidate.vcf / SRR_annotated.vcf | 165,818 variants |
 | Missense | grep missense_variant | 4,224 (≈4.2k; report said 4,265 — 41 multi-annotation lines) |
@@ -16,6 +16,16 @@
 ## Resolved issues
 - **HLA-C "missing" allele:** OptiType result is C*07:01 / C*07:01 (homozygous, 29 reads). Diploid profile complete.
 - **13% mapping:** expected for chr1-only; flagstat 37% properly paired / 63% singletons confirms.
+
+## Fresh MHCflurry 2.1.2 re-run (this session, models_class1, env gbm-pub)
+- Galaxy values reproduced to 5 decimals: LLFGYPVYV 10.31053, ALAAAVAAV 16.94121 (HLA-A*02:06).
+- SDF4 A120V 9mer tiling × full diploid profile (`results/sdf4_validation_out.csv`,
+  `results/sdf4_validation_other_alleles.csv`, Fig 7): all A*02:06 >6,800 nM (non-binders);
+  best overall EMQRWVMEK/A*30:01 = 192.05 nM (weak); QRWVMEKTA/C*07:01 = 857.77 nM.
+  No strong binder. SDF4-as-9mer-vaccine-candidate is REFUTED for this allele set;
+  10/11-mers + expression follow-up remain open, not claimed.
+- ALAAAVAAV binds ONLY A*02:06 (elsewhere >3,500 nM); gene origin still unattributed
+  (0 hits in batch_peptides/high_affinity, absent from SDF4). Do not label it SDF4.
 
 ## Flags (honest limitations, must stay in publication)
 1. **ALAAAVAAV provenance UNCONFIRMED:** absent from SDF4 protein (all isoforms checked via Ensembl REST)

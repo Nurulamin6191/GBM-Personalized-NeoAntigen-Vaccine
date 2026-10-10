@@ -1,0 +1,155 @@
+STAR version=2.7.11b
+STAR compilation time,server,dir=2025-11-14T12:06:42+0000 :/opt/conda/conda-bld/star_1763121846936/work/source
+##### Command Line:
+/home/shaikh/miniconda3/envs/Gbm/bin/STAR-avx2 --runMode alignReads --genomeDir ./star_index --readFilesIn SRR30677899_1_fixed.fq.gz SRR30677899_2_fixed.fq.gz --readFilesCommand zcat --outFileNamePrefix SRR_star --outSAMtype BAM SortedByCoordinate
+##### Initial USER parameters from Command Line:
+outFileNamePrefix                 SRR_star
+###### All USER parameters from Command Line:
+runMode                       alignReads        ~RE-DEFINED
+genomeDir                     ./star_index     ~RE-DEFINED
+readFilesIn                   SRR30677899_1_fixed.fq.gz   SRR30677899_2_fixed.fq.gz        ~RE-DEFINED
+readFilesCommand              zcat        ~RE-DEFINED
+outFileNamePrefix             SRR_star     ~RE-DEFINED
+outSAMtype                    BAM   SortedByCoordinate        ~RE-DEFINED
+##### Finished reading parameters from all sources
+
+##### Final user re-defined parameters-----------------:
+runMode                           alignReads   
+genomeDir                         ./star_index
+readFilesIn                       SRR30677899_1_fixed.fq.gz   SRR30677899_2_fixed.fq.gz   
+readFilesCommand                  zcat   
+outFileNamePrefix                 SRR_star
+outSAMtype                        BAM   SortedByCoordinate   
+
+-------------------------------
+##### Final effective command line:
+/home/shaikh/miniconda3/envs/Gbm/bin/STAR-avx2   --runMode alignReads      --genomeDir ./star_index   --readFilesIn SRR30677899_1_fixed.fq.gz   SRR30677899_2_fixed.fq.gz      --readFilesCommand zcat      --outFileNamePrefix SRR_star   --outSAMtype BAM   SortedByCoordinate   
+----------------------------------------
+
+Number of fastq files for each mate = 1
+
+   Input read files for mate 1 :
+-rwxrwxrwx 1 root root 326370231 Jan 16 22:43 SRR30677899_1_fixed.fq.gz
+
+   readsCommandsFile:
+exec > "SRR_star_STARtmp/tmp.fifo.read1"
+echo FILE 0
+zcat      "SRR30677899_1_fixed.fq.gz"
+
+
+   Input read files for mate 2 :
+-rwxrwxrwx 1 root root 637989382 Jan 16 22:43 SRR30677899_2_fixed.fq.gz
+
+   readsCommandsFile:
+exec > "SRR_star_STARtmp/tmp.fifo.read2"
+echo FILE 0
+zcat      "SRR30677899_2_fixed.fq.gz"
+
+ParametersSolo: --soloCellFilterType CellRanger2.2 filtering parameters:  3000 0.99 10
+WARNING: --limitBAMsortRAM=0, will use genome size as RAM limit for BAM sorting
+Finished loading and checking parameters
+Reading genome generation parameters:
+### /home/shaikh/miniconda3/envs/Gbm/bin/STAR-avx2   --runMode genomeGenerate      --genomeDir ./star_index   --genomeFastaFiles Homo_sapiens.GRCh38.dna.chromosome.1.fa      --sjdbGTFfile Homo_sapiens.GRCh38.115.gtf   --sjdbOverhang 100
+### GstrandBit=32
+versionGenome                 2.7.4a     ~RE-DEFINED
+genomeType                    Full     ~RE-DEFINED
+genomeFastaFiles              Homo_sapiens.GRCh38.dna.chromosome.1.fa        ~RE-DEFINED
+genomeSAindexNbases           14     ~RE-DEFINED
+genomeChrBinNbits             18     ~RE-DEFINED
+genomeSAsparseD               1     ~RE-DEFINED
+genomeTransformType           None     ~RE-DEFINED
+genomeTransformVCF            -     ~RE-DEFINED
+sjdbOverhang                  100     ~RE-DEFINED
+sjdbFileChrStartEnd           -        ~RE-DEFINED
+sjdbGTFfile                   Homo_sapiens.GRCh38.115.gtf     ~RE-DEFINED
+sjdbGTFchrPrefix              -     ~RE-DEFINED
+sjdbGTFfeatureExon            exon     ~RE-DEFINED
+sjdbGTFtagExonParentTranscripttranscript_id     ~RE-DEFINED
+sjdbGTFtagExonParentGene      gene_id     ~RE-DEFINED
+sjdbInsertSave                Basic     ~RE-DEFINED
+genomeFileSizes               260998511   1999661502        ~RE-DEFINED
+Genome version is compatible with current STAR
+Number of real (reference) chromosomes= 1
+1	1	248956422	0
+--sjdbOverhang = 100 taken from the generated genome
+Started loading the genome: Fri Jan 16 22:47:39 2026
+
+Genome: size given as a parameter = 260998511
+SA: size given as a parameter = 1999661502
+SAindex: size given as a parameter = 1
+Read from SAindex: pGe.gSAindexNbases=14  nSAi=357913940
+nGenome=260998511;  nSAbyte=1999661502
+GstrandBit=32   SA number of indices=484766424
+Shared memory is not used for genomes. Allocated a private copy of the genome.
+Genome file size: 260998511 bytes; state: good=1 eof=0 fail=0 bad=0
+Loading Genome ... done! state: good=1 eof=0 fail=0 bad=0; loaded 260998511 bytes
+SA file size: 1999661502 bytes; state: good=1 eof=0 fail=0 bad=0
+Loading SA ... done! state: good=1 eof=0 fail=0 bad=0; loaded 1999661502 bytes
+Loading SAindex ... done: 1565873619 bytes
+Finished loading the genome: Fri Jan 16 22:47:41 2026
+
+Processing splice junctions database sjdbN=59511,   pGe.sjdbOverhang=100 
+alignIntronMax=alignMatesGapMax=0, the max intron size will be approximately determined by (2^winBinNbits)*winAnchorDistNbins=589824
+Starting to map file # 0
+mate 1:   SRR30677899_1_fixed.fq.gz
+mate 2:   SRR30677899_2_fixed.fq.gz
+BAM sorting: 245313 mapped reads
+BAM sorting bins genomic start loci:
+1	0	632458
+2	0	634049
+3	0	1402007
+4	0	7724551
+5	0	10747887
+6	0	15605163
+7	0	19606546
+8	0	22478435
+9	0	25331920
+10	0	27649613
+11	0	31344401
+12	0	35171352
+13	0	39028839
+14	0	42499862
+15	0	44778122
+16	0	47231072
+17	0	52160064
+18	0	57566761
+19	0	62717406
+20	0	68242638
+21	0	77911391
+22	0	86743297
+23	0	92872911
+24	0	96678923
+25	0	106721599
+26	0	111461139
+27	0	115813237
+28	0	143399461
+29	0	147068396
+30	0	150318584
+31	0	153534703
+32	0	154936217
+33	0	156672639
+34	0	161406982
+35	0	167649586
+36	0	173351857
+37	0	180324093
+38	0	186780750
+39	0	198500029
+40	0	203183686
+41	0	206809122
+42	0	212309140
+43	0	220140786
+44	0	225784653
+45	0	228951460
+46	0	234523750
+47	0	239979642
+48	0	243311458
+Thread #0 end of input stream, nextChar=-1
+Completed: thread #0
+Jan 16 23:41:08 ..... finished mapping
+RAM after mapping:
+VmPeak:	 3948796 kB; VmSize:	 3900944 kB; VmHWM:	 3941448 kB; VmRSS:	 3894128 kB; 
+RAM after freeing genome index memory:
+VmPeak:	 3948796 kB; VmSize:	  164088 kB; VmHWM:	 3941448 kB; VmRSS:	  157272 kB; 
+Jan 16 23:41:10 ..... started sorting BAM
+Max memory needed for sorting = 19481387
+ALL DONE!

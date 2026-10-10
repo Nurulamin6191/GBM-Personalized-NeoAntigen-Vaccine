@@ -1,0 +1,3 @@
+allele,peptide,mhcflurry_affinity,mhcflurry_affinity_percentile,mhcflurry_processing_score,mhcflurry_presentation_score,mhcflurry_presentation_percentile
+HLA-A*02:06,LLFGYPVYV,10.310532939819916,0.000875,0.9557750225067139,0.9956760024327799,0.00019021739127822457
+HLA-A*02:06,ALAAAVAAV,16.94120881873819,0.06475,0.6657374408096075,0.9807478661100453,0.007255434782621251

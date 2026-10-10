@@ -17,6 +17,13 @@
 - **HLA-C "missing" allele:** OptiType result is C*07:01 / C*07:01 (homozygous, 29 reads). Diploid profile complete.
 - **13% mapping:** expected for chr1-only; flagstat 37% properly paired / 63% singletons confirms.
 
+## Local GATK validation (this session, SRR30677899, chr1)
+- HaplotypeCaller raw 43,461 → PASS 8,260 (7,832 SNPs + 430 indels) after QD<2/FS>30/DP<10 filtration.
+- Overlap with FreeBayes raw (165,818, chr-normalized): **1,568 / 8,260 (19%)**.
+  Low overlap expected: different callers + ENSEMBL "1" vs UCSC "chr1" reference naming (harmonization TODO).
+- **SDF4 chr1:1223936 absent from GATK raw AND PASS; zero GATK calls within ±1 kb.**
+  FreeBayes-only call at QUAL≈7e-9. Two-caller non-replication — SDF4 A120V is FreeBayes-only, low-confidence.
+
 ## Fresh MHCflurry 2.1.2 re-run (this session, models_class1, env gbm-pub)
 - Galaxy values reproduced to 5 decimals: LLFGYPVYV 10.31053, ALAAAVAAV 16.94121 (HLA-A*02:06).
 - SDF4 A120V 9mer tiling × full diploid profile (`results/sdf4_validation_out.csv`,

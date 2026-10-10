@@ -96,3 +96,10 @@
 - 1,047/1,083 rare binders expressed (TPM>=1 either replicate); 36 dropped.
 - Table 1 v2 order unchanged; TPM range 2.6-95 (AP2M1 94.95, MACROH2A1 88.76).
   (06_Neoantigens/Table1v2_expressed.csv, Fig 10)
+
+## Script-driven NetMHCpan validation (this session, IEDB API, fetch_iedb.py)
+- Table 1 v2 peptides: NetMHCpan BA IC50 2.40-14.64 nM — every one strong, same verdict as MHCflurry.
+- SDF4 tiling: 10,794 / 18,248 nM (non-binders, both predictors agree).
+- ALAAAVAAV 6.92 / LLFGYPVYV 3.29 nM (strong, both agree); SYFPEITHI 3,568 nM on
+  A*02:06 (non-binder here — it is an A*02:01-family control, never a negative control).
+- (06_Neoantigens/IEDB_api/netmhcpan_ba_A0206.tsv, Fig 11)

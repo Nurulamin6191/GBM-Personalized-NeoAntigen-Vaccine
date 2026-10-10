@@ -5,11 +5,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
-FIG = Path("rebuild/figures"); FIG.mkdir(parents=True, exist_ok=True)
+FIG = Path("07_Figures"); FIG.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 8, "figure.dpi": 300})
 
-a0206 = pd.read_csv("rebuild/results/sdf4_validation_out.csv")
-other = pd.read_csv("rebuild/results/sdf4_validation_other_alleles.csv")
+a0206 = pd.read_csv("06_Neoantigens/sdf4_validation_out.csv")
+other = pd.read_csv("06_Neoantigens/sdf4_validation_other_alleles.csv")
 df = pd.concat([a0206[["allele", "peptide", "mhcflurry_affinity"]],
                 other[["allele", "peptide", "mhcflurry_affinity"]]], ignore_index=True)
 sdf4 = ["SAKEMQRWV","AKEMQRWVM","KEMQRWVME","EMQRWVMEK","MQRWVMEKT",

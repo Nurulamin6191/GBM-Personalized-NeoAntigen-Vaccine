@@ -1,3 +1,0 @@
-variant,gene,consequence,peptide,length,note
-DEMO:chr1:missense,DEMO,missense_variant,LLFGYPVYV,9,v1 top candidate; re-derived in full run
-DEMO:control,CTRL,control,SYFPEITHI,9,classical HLA-A*02:01 binder control — NOT a negative control

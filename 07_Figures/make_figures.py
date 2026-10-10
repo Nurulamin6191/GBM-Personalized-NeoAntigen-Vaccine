@@ -5,7 +5,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from pathlib import Path
-FIG = Path("rebuild/figures")
+FIG = Path("07_Figures")
 FIG.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 9, "figure.dpi": 300})
 

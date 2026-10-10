@@ -1,4 +1,4 @@
-# Evidence manifest — previous work (Last/) → curated (rebuild/evidence_prev/)
+# Evidence manifest — previous work (Last/) → curated (evidence (now 01-06 folders)/)
 
 Source is READ-ONLY provenance; this repo carries only pushable curation (<10 MB).
 Large originals stay in Last/ and are referenced here, excluded from git.

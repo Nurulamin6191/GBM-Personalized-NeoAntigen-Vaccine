@@ -5,11 +5,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
-FIG = Path("rebuild/figures"); FIG.mkdir(parents=True, exist_ok=True)
+FIG = Path("07_Figures"); FIG.mkdir(parents=True, exist_ok=True)
 plt.rcParams.update({"font.size": 9, "figure.dpi": 300})
 
 # Fig4: top-20 affinities + SDF4 focused marker
-hi = pd.read_csv("rebuild/evidence_prev/05_Predict/high_affinity_candidates.csv")
+hi = pd.read_csv("06_Neoantigens/high_affinity_candidates.csv")
 hi = hi.sort_values("affinity").head(20).reset_index(drop=True)
 fig, ax = plt.subplots(figsize=(8.5, 4.2))
 ax.barh(hi["Peptide"], hi["affinity"], color="#1a7f37")
@@ -24,7 +24,7 @@ fig.tight_layout(); fig.savefig(FIG/"fig04_top20_affinity.png", bbox_inches="tig
 print("wrote fig04", len(hi))
 
 # Fig5: variant consequence spectrum (165,818 FreeBayes raw)
-vc = pd.read_csv("rebuild/evidence_prev/03_Variants/variant_counts.tsv", sep="\t", header=None, names=["k","v"])
+vc = pd.read_csv("04_Variants/variant_counts.tsv", sep="\t", header=None, names=["k","v"])
 vc = vc[vc.k != "total_variants"].head(9)
 fig, ax = plt.subplots(figsize=(7.5, 3.6))
 ax.bar(vc["k"], vc["v"], color="#3070b8")
@@ -41,7 +41,7 @@ import re
 rows = []
 for s in ["SRR30677899", "SRR30677902"]:
     for r in ["1", "2"]:
-        p = Path(f"rebuild/evidence_prev/01_QC/{s}/{s}_{r}.fastq.gz_trimming_report.txt")
+        p = Path(f"02_QC/{s}/{s}_{r}.fastq.gz_trimming_report.txt")
         if p.exists():
             t = p.read_text()
             m = re.search(r"Reads with adapters:\s+([\d,]+)", t)

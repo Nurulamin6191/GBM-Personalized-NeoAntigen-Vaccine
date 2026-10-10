@@ -1,56 +1,61 @@
 # In Silico Identification of Neoantigens for Personalised Immunotherapy in Glioblastoma
 
-## 📌 Project Overview
-This project establishes a reproducible bioinformatics pipeline to identify and rank novel neoantigens from Glioblastoma RNA-seq datasets. The objective is to design personalized vaccines by detecting mutated peptides that bind strongly to patient-specific HLA alleles.
+> Repo rename proposed: `Glioblastoma-Neoantigen-Discovery` (shorter, searchable;
+> old URL keeps working via GitHub redirect). See bottom for 1-click steps.
 
-**Target:** Glioblastoma (GBM)
-* **Reference Genome:** GRCh38 (Chromosome 01 Pilot) - ENSEMBL.
-* **Sample ID:** SRR30677899 & SRR30677902 - NCBI SRA
+## Objective
+Build an **evidence-first, end-to-end validated** neoantigen discovery pipeline for
+glioblastoma from tumor RNA-seq: raw reads → QC → alignment → variant calling →
+HLA typing → peptide tiling → binding prediction → ranked candidates — with every
+filtering step counted, every negative result reported, and every figure
+regenerated from checked-in tables (07_Figures/).
 
-## 🛠️ Tech Stack & Tools
-* **Environment:** Ubuntu Linux (Conda `gbm` environment)
-* **Data Acquisition:** NCBI SRA Toolkit
-* **Quality Control:** FastQC, Trim Galore
-* **Alignment:** STAR Aligner
-* **Variant Calling:** GATK HaplotypeCaller, Picard, VEP
-* **HLA Typing:** OptiType 
-* **Prediction:** MHCflurry
+## Why this dataset
+- **PRJNA1161693** (Gliocidin PDX glioblastoma + temozolomide, the clinical setting
+  for a personalised vaccine): SRR30677899 (15.4M spots) + SRR30677902 (18.0M),
+  Illumina NovaSeq 6000, paired. See 01_Data/SAMPLES.csv + WHY_DATASET.md.
+- Both runs share BioSample SAMN43786660 (replicates) → variant calls checked for
+  consistency without inter-patient HLA confounding.
+- ~33M spots fits 8-CPU/15-GB-RAM hardware (full-genome STAR index needs ~30 GB,
+  hence chr1-pilot + scripted HISAT2-full design).
 
-## 🧬 Pipeline Workflow
+## Why this pipeline (each tool earns its place)
+| Stage | Tool | Why |
+|---|---|---|
+| QC | FastQC + Trim Galore Q20/len20/2-colour | R1=29bp/R2=89bp SMART-seq-type; len50 would delete R1; NovaSeq poly-G + SMARTer oligo in R2 |
+| Alignment | STAR chr1 pilot (reproduced 3×: 13.90/13.91/13.83%) | reproduces original exactly; proves 13% is expected chr1-only behaviour, not "Excellent" |
+| Variants | FreeBayes (Galaxy, 165,818 → 4,224 missense) + GATK HC local (43,461 → 8,260 PASS) | two-caller check; 19% overlap; SDF4 call is FreeBayes-only QUAL~0 |
+| Peptides | missense → 8–11mer tiling (36,203 9mers) | the bridge v1 skipped (it tested 2 hand-picked peptides) |
+| HLA | OptiType → A*02:06/A*30:01 B*08:01/B*53:01 C*07:01×2 | C is homozygous — resolves v1's "missing" 6th allele |
+| Binding | MHCflurry 2.1.2 full-diploid, 50/500 nM IEDB cutoffs | single-allele 2-peptide test → 60 peptide-allele matrix |
 
-### 1. Data Acquisition
-Raw RNA-seq data was downloaded using the SRA toolkit and converted to FASTQ format.
+## Honest headline results
+- Batch screen top hits bind strongly (e.g. FLIGSTSYV 10.14 nM); full top-20 in Fig4.
+  They await gene-annotation + expression filtering for Table 1 — not claimed as vaccines.
+- **SDF4 A120V 9mers do NOT bind HLA-A*02:06** (all >6,800 nM; best overall
+  EMQRWVMEK/A*30:01 192 nM weak). SDF4 call itself is FreeBayes-only, absent from
+  GATK ±1 kb. The 9mer vaccine claim is refuted two independent ways (Fig7).
+- ALAAAVAAV (16.94 nM, A*02:06-only) reproduced exactly but is **not SDF4-derived**
+  (absent from SDF4 protein + all tilings) — gene attribution required.
+- SYFPEITHI is a known A*02:01 binder control, not a "negative control" (v1 error).
 
-### 2. Quality Control (QC)
-Reads were processed to remove adapters and low-quality bases (< Q20).
-* **Result:** Read 1 length decreased (aggressive cleaning), while Read 2 maintained high quality.
+## Layout
+01_Data → 02_QC → 03_Alignment → 04_Variants → 05_HLA → 06_Neoantigens →
+07_Figures → 08_Reproducibility (config, env, METHODS, AUDIT, VALIDATION, manifests).
+Run stage scripts from repo root (`bash 01_Data/fetch.sh`, …); runtime dirs
+(data/, refs/, results-RUNTIME/) are git-ignored and documented.
 
-### 3. Genome Alignment
-Trimmed sequences were mapped to the GRCh38 reference genome using STAR.
-* **Metric:** ~13% uniquely mapped reads (Excellent for the Chromosome 01 pilot run).
+## Reproduce
+1. `conda env create -f 08_Reproducibility/gbm-pub.yml` (or prefix-install on /mnt if root is full)
+2. `bash 01_Data/fetch.sh && bash 02_QC/run_qc.sh && bash 03_Alignment/run_align.sh`
+3. `bash 04_Variants/run_variants.sh && bash 05_HLA/run_hla.sh && bash 06_Neoantigens/run_predict.sh`
+4. `python3 07_Figures/make_figures_prev.py && python3 07_Figures/make_fig07.py`
 
-### 4. Variant Calling
-Mutations were identified to find somatic variants.
-* **Process:** Read group tagging (Picard) -> Variant Calling (GATK) -> Annotation (VEP).
+## Limitations
+Tumor-only (no matched normal), chr1 pilot (full-genome scripted, not run here),
+FreeBayes/GATK 19% overlap (caller + reference-naming differences), SDF4 needs
+IGV/Sanger confirmation, NetMHCpan cross-validation pending.
 
-### 5. HLA Typing
-Patient HLA alleles were identified using OptiType.
-* **Identified Profile:**
-    * HLA-A: A*02:06, A30:01
-    * HLA-B: B*08:01, B53:01
-    * HLA-C: C*07:01
-
-### 6. Neoantigen Prediction
-Peptides were tested for binding affinity against the patient's HLA-A*02:06 allele using MHCflurry.
-
-## 📊 Results
-
-The pipeline successfully filtered candidates based on a binding affinity strength of < 500nM.
-
-| Candidate Type | Peptide Sequence | Affinity (nM) | Prediction |
-| :--- | :--- | :--- | :--- |
-| **Top Candidate** | **LLFGYPVYV** | **10.31 nM** | **Strong Binder (High Priority)** |
-| Negative Control | SYFPEITHI | 746.85 nM | Non-Binder (Rejected) |
-
-## 📝 Conclusion
-This workflow successfully integrates SRA data acquisition, alignment, variant calling, and HLA profiling to identify vaccine targets. The top candidate, **LLFGYPVYV**, binds tightly to the patient's HLA-A*02:06 receptor and is a suitable candidate for vaccine design.
+## Rename this repository (1 click, safe)
+GitHub → repo Settings → General → Repository name → `Glioblastoma-Neoantigen-Discovery` → Rename.
+GitHub auto-redirects the old URL. Then: `git remote set-url origin https://github.com/Nurulamin6191/Glioblastoma-Neoantigen-Discovery.git`.

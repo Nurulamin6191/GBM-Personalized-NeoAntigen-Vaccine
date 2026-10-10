@@ -12,7 +12,7 @@
 │   ├── refs/          2.4G  chr1 FASTA + STAR index (excluded from git; documented)
 │   ├── evidence_prev/ 7.6M  curated previous-work evidence (IN git)
 │   ├── figures/       800K  Fig1-7 PNG (IN git)
-│   ├── docs/          METHODS, AUDIT, VALIDATION, EVIDENCE_MANIFEST (IN git)
+│   ├── 08_Reproducibility/          METHODS, AUDIT, VALIDATION, EVIDENCE_MANIFEST (IN git)
 │   ├── config/ workflow/ CITATION.cff LICENSE (IN git)
 ├── repo/              15M  git checkout (pushed to GitHub main @84b60b8)
 ├── .conda_envs/       4.5G  gbm-pub env (python3.10 + tools + mhcflurry; on /mnt, root disk was full)

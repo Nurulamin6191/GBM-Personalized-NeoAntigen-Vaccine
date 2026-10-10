@@ -51,10 +51,10 @@ Run stage scripts from repo root (`bash 01_Data/fetch.sh`, …); runtime dirs
 3. `bash 04_Variants/run_variants.sh && bash 05_HLA/run_hla.sh && bash 06_Neoantigens/run_predict.sh`
 4. `python3 07_Figures/make_figures_prev.py && python3 07_Figures/make_fig07.py`
 
-## Limitations
-Tumor-only (no matched normal), chr1 pilot (full-genome scripted, not run here),
-FreeBayes/GATK 19% overlap (caller + reference-naming differences), SDF4 needs
-IGV/Sanger confirmation, NetMHCpan cross-validation pending.
+## Limitations & future directions (explicit)
+See 08_Reproducibility/LIMITATIONS_AND_FUTURE_DIRECTIONS.md — tumor-only design,
+chr1-pilot scope, SDF4 exclusion, RNA-HLA instability, 9mer/MHCflurry-only screen,
+bulk expression gating, PDX context, plus a reviewer checklist.
 
 ## Repository address
 Canonical: `https://github.com/Nurulamin6191/GBM-Personalized-NeoAntigen-Vaccine`.

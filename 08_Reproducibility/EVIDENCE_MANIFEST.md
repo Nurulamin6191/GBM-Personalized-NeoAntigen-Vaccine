@@ -1,21 +1,28 @@
-# Evidence manifest — previous work (Last/) → curated (evidence (now 01-06 folders)/)
+# Evidence manifest — curated publication repo (numbered stages)
 
-Source is READ-ONLY provenance; this repo carries only pushable curation (<10 MB).
-Large originals stay in Last/ and are referenced here, excluded from git.
+Provenance note: the original `Last/` work folder was removed during consolidation;
+its curated evidence below is what survives, plus public sources (SRA PRJNA1161693,
+ENSEMBL r111, UniProt UP000005640, Ensembl REST) that regenerate the rest.
 
-| Curated path | Source in Last/ | Size | Note |
-|---|---|---|---|
-| 01_QC/*/trimming_report.txt + *_fastqc.html | Pipeline_outcome_Data/*/Raw_qc/ | 7 MB | zips excluded (regenerable) |
-| 02_Align/SRR_starLog.* + marked_dup_metrics | .../SRR30677899/Alignment_records + .txt | KB | SJ table included |
-| 03_Variants/variant_counts.tsv + SDF4 excerpt | Galaxy_Pipelines/SRR_annotated.vcf (165,818) | bytes | counts script in VALIDATION |
-| 04_HLA/result.tsv + coverage_plot.pdf | .../hla_result/2026_01_19_14_55_21/ | 108 KB | proves C*07:01 homozygous |
-| 05_Predict/candidates + batch + high_affinity + focused | Galaxy_Pipelines/*.csv + galaxy/final_results.csv | 1.5 MB | |
-| scripts/*.py | Galaxy_Pipelines/*.py | KB | |
+| Repo path | Origin | Note |
+|---|---|---|
+| 01_Data/SAMPLES.csv + WHY_DATASET.md + fetch.sh | ENA + SRA toolkit | 33M spots total |
+| 02_QC/*/trimming_report.txt + *_fastqc.html | Galaxy Trim Galore/FastQC reports | zips excluded (regenerable) |
+| 03_Alignment/SRR_starLog.* + markdup + Log.final + flagstats + hisat2 rates | Galaxy STAR + local STAR/HISAT2 re-runs | 13.9% chr1 ×3; 44.7% full-genome |
+| 04_Variants/variant_counts.tsv + SDF4 excerpt + pileup + PASS.stats + missense_dbsnp.tsv | FreeBayes VCF (165,818) + local GATK + VEP REST | 4,224 missense; SDF4 triple-strike |
+| 04_Variants/VEP_ensembl115_*.pdf | Ensembl browser VEP reports | per-sample |
+| 05_HLA/result.tsv + coverage PDFs + HLA PNGs + optitype_rerun/ | prior OptiType + local OptiType 1.5.0 rerun | 899 exact; 902 unstable (documented) |
+| 06_Neoantigens/candidates + batch + high_affinity + focused | Galaxy Python pipeline | 36,203 9mers; 1,953 binders |
+| 06_Neoantigens/IEDB/ | IEDB NetMHCpan EL/BA runs | orthogonal validation |
+| 06_Neoantigens/per-sample + per_sample_A0206/ | per-sample runs re-scored vs A*02:06 | A*02:01-default bug fixed |
+| 06_Neoantigens/sdf4_validation_*.csv + proteome_attribution.tsv | fresh MHCflurry 2.1.2 + UniProt | SDF4 tiling negative; ALAAAVAAV synthetic |
+| 06_Neoantigens/Table1*.csv + build/gate scripts | germline filter + StringTie TPM | 1,083 rare; v2 expressed |
+| 07_Figures/fig01-10 + generators | all regenerated from checked-in tables | verified reproducible |
+| 08_Reproducibility/config.yaml + gbm-pub.yml + METHODS/AUDIT/VALIDATION/ORGANIZATION | pipeline records | |
+| 09_Manuscript/Report_Final.docx + manuscript_outline.md | author drafts | wet-lab confirmations listed |
 
-## EXCLUDED as irrelevant / unpushable (kept in Last/, NOT in repo)
-- PI_request.txt (AI process advice, not data)
-- file1.csv / file1.txt (155 MB duplicates of candidate.vcf)
-- *.bam / *.bai (~GBs), *.fastq / *.fq.gz (GBs), star_index/ binaries (2 GB), tmp/vep tar
-- sorted.gtf.gz(.tbi), *.idx, _STARtmp/, SRR_annotated.vcf 8B empty stub + 101M .vcf.vcf raw
-- gene_counts.txt 82M raw (needs summarising to TPM table — TODO)
-- Data/ fastq duplicates of rebuild/data/fastq
+## EXCLUDED (unpushable / irrelevant)
+- *.bam/*.bai, *.fastq.gz, *.sra, STAR/HISAT2 indexes, VEP cache tar, .idx/.tbi,
+  82M raw gene counts (superseded by StringTie TPM), 155M file1 duplicates,
+  PI_request.txt (process advice), submission zips, personal SOP odt, 0-byte .Rhistory.
+- Regenerate via stage scripts (01_Data/fetch.sh … 06_Neoantigens/run_expression.sh).

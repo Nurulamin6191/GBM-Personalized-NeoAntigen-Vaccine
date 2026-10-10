@@ -6,8 +6,8 @@ mkdir -p 05_HLA/optitype_rerun logs
 # v1 reported 5 alleles with 2nd HLA-C missing; prior OptiType tsv showed C*07:01 homozygous.
 # This re-derives from trimmed RNA-seq FASTQs:
 for S in SRR30677899 SRR30677902; do
-  R1=$(ls results/qc/trimmed/${S}_1_val_1.fq.gz 2>/dev/null || ls data/fastq/${S}_1.fastq.gz)
-  R2=$(ls results/qc/trimmed/${S}_2_val_2.fq.gz 2>/dev/null || ls data/fastq/${S}_2.fastq.gz)
+  R1=$(ls results-RUNTIME/qc/trimmed/${S}_1_val_1.fq.gz 2>/dev/null || ls data-RUNTIME/fastq/${S}_1.fastq.gz)
+  R2=$(ls results-RUNTIME/qc/trimmed/${S}_2_val_2.fq.gz 2>/dev/null || ls data-RUNTIME/fastq/${S}_2.fastq.gz)
   optitype run -i "$R1" -i "$R2" --rna -o 05_HLA/optitype_rerun -p "$S" \
     --solver cbc --threads 4 2>&1 | tee logs/05_optitype_${S}.log
 done

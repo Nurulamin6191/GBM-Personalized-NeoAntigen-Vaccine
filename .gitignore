@@ -1,6 +1,6 @@
-data/sra/
-data/fastq/
-refs/
+data-RUNTIME/
+refs-RUNTIME/
+results-RUNTIME/
 *.bam
 *.bai
 *.sam
@@ -10,7 +10,3 @@ refs/
 logs/*.log
 __pycache__/
 .ipynb_checkpoints/
-.conda_envs/
-.conda_pkgs/
-CONDA_ENV/
-results-RUNTIME/

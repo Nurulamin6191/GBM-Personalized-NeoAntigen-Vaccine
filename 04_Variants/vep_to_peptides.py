@@ -15,7 +15,7 @@ def tile_9mers(center_seq, k=9):
 
 def main():
     inp = Path(sys.argv[1]) if len(sys.argv) > 1 else None
-    out = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("results/peptides/tiled_9mers.csv")
+    out = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("results-RUNTIME/peptides/tiled_9mers.csv")
     out.parent.mkdir(parents=True, exist_ok=True)
     rows = []
     if inp and inp.exists():

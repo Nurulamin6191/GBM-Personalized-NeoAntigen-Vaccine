@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Gate Table 1 by expression: keep genes with TPM>=1 in either replicate.
-Inputs: results/expr/SRR*.tab (StringTie gene abundance), 06_Neoantigens/Table1_top10_rare_binders.csv
+Inputs: results-RUNTIME/expr/SRR*.tab (StringTie gene abundance), 06_Neoantigens/Table1_top10_rare_binders.csv
         + full rare-binder list rebuild: join all 1083 via high_affinity table.
 Out: 06_Neoantigens/Table1v2_expressed.csv
 """
@@ -17,7 +17,7 @@ def symbol(eid):
         return eid
 
 tpm = {}
-for f in glob.glob("results/expr/*.tab"):
+for f in glob.glob("results-RUNTIME/expr/*.tab"):
     with open(f) as fh:
         for line in fh:
             if line.startswith("Gene ID"):
@@ -41,22 +41,20 @@ with open("06_Neoantigens/Table1_top10_rare_binders.csv") as f:
 import sys
 sys.path.insert(0, "06_Neoantigens")
 rare = set()
-dbsnp = list(csv.DictReader(open("04_Variants/missense_dbsnp.tsv"), delimiter="\t"))
-# map via VCF ANN like build_table1
-with open("/mnt/nvme0n1p5/AGY/Previous/Last/Galaxy_Pipelines/SRR_annotated.vcf") as f:
+with open("06_Neoantigens/rare_genes.tsv") as f:
+    next(f)
     for line in f:
-        if line.startswith("#"):
-            continue
-        p = line.split("\t")
-        key = (p[0].replace("chr", ""), p[1])
-        hit = [r for r in dbsnp if (r["chrom"], r["pos"]) == key and r["verdict"] == "RARE_PRIVATE"]
-        if not hit:
-            continue
-        for m in p[7].split(","):
-            if "missense_variant" in m:
-                parts = m.split("|")
-                if len(parts) > 4 and parts[4]:
-                    rare.add(parts[4])
+        p = line.rstrip("\n").split("\t")
+        if p and p[0]:
+            rare.add(p[0].split(".")[0])
+# (also accept versioned IDs)
+with open("06_Neoantigens/rare_genes.tsv") as f:
+    next(f)
+    for line in f:
+        p = line.rstrip("\n").split("\t")
+        if p and p[0]:
+            rare.add(p[0])
+print("rare genes (cached):", len(rare))
 rows = [r for r in hi if r["Gene_ID"] in rare and float(r["affinity"]) < 500]
 rows.sort(key=lambda r: float(r["affinity"]))
 kept, dropped = [], 0

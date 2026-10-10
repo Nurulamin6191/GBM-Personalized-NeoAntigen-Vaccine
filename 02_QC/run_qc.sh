@@ -1,8 +1,8 @@
 #!/bin/bash
 # 01 — QC: FastQC (raw) → Trim Galore (Q20) → FastQC (trimmed) → MultiQC
 set -euo pipefail
-FQ="data/fastq"
-QC="results/qc"
+FQ="data-RUNTIME/fastq"
+QC="results-RUNTIME/qc"
 mkdir -p "$QC/raw" "$QC/trimmed" "$QC/multiqc" logs
 echo "[QC] FastQC raw..."
 fastqc --outdir "$QC/raw" -t 8 "$FQ"/*.fastq.gz

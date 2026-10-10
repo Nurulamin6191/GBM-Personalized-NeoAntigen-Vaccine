@@ -1,70 +1,66 @@
 #!/usr/bin/env python3
-"""Filter missense VCF records against gnomAD AF via Ensembl VEP REST (batch POST).
-Keeps AF<0.01 or absent (rare/private). Input: Galaxy SRR_annotated.vcf (chr1).
-Out: 04_Variants/missense_gnomad.tsv + rare_candidates.csv
+"""dbSNP germline filter via Ensembl VEP REST (threaded batch POST, 4 workers).
+Input : 04_Variants/missense_dbsnp.tsv (chrom/pos/ref/alt; re-runnable, no VCF needed)
+Output: same file refreshed with rsid + verdict columns.
+Verdict: COMMON_GERMLINE_PROXY if a colocated dbSNP rsID exists, else RARE_PRIVATE.
+(Caveat: rare germline variants are also novel; tumor-only design requires this proxy.
+VEP REST returns no allele frequencies in this Ensembl version — verified with rs1799983.)
 """
-import json, re, sys, time, urllib.request
+import csv, json, time, urllib.request
+from concurrent.futures import ThreadPoolExecutor
 
-VCF = "Last/Galaxy_Pipelines/SRR_annotated.vcf"
-OUT = "rebuild/04_Variants/missense_dbsnp.tsv"
+INOUT = "04_Variants/missense_dbsnp.tsv"
 CHUNK = 200
+WORKERS = 4
+
 
 def post(chunk):
     body = json.dumps({"variants": chunk}).encode()
-    req = urllib.request.Request("https://rest.ensembl.org/vep/homo_sapiens/region",
-                                 data=body, headers={"Content-Type": "application/json",
-                                                     "Accept": "application/json"})
-    for attempt in range(3):
+    req = urllib.request.Request(
+        "https://rest.ensembl.org/vep/homo_sapiens/region", data=body,
+        headers={"Content-Type": "application/json", "Accept": "application/json"})
+    for _ in range(3):
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=90) as r:
                 return json.load(r)
-        except Exception as e:
-            print(f"retry {attempt}: {e}", flush=True)
+        except Exception:
             time.sleep(5)
-    return None
+    return []
 
-recs = []
-with open("/mnt/nvme0n1p5/AGY/previous/" + VCF) as f:
-    for line in f:
-        if line.startswith("#"):
-            continue
-        p = line.split("\t")
-        ann = p[7]
-        if "missense_variant" not in ann:
-            continue
-        m = re.search(r"\|(\w+\.\w+Ala\d+\w+|\w+\.p\.\w+)|", ann)
-        # VEP region format: "CHR START END REF/ALT STRAND"
-        recs.append((p[0].replace("chr", ""), p[1], p[3], p[4], ann))
 
-print(f"missense records: {len(recs)}", flush=True)
-out = open("/mnt/nvme0n1p5/AGY/previous/" + OUT, "w")
-out.write("chrom\tpos\tref\talt\trsid\tverdict\n")
-rare = 0
-for i in range(0, len(recs), CHUNK):
-    chunk = [f"{c} {p} {p} {r}/{a} +" for c, p, r, a, _ in recs[i:i + CHUNK]]
-    res = post(chunk)
-    if res is None:
-        for c, p, r, a, _ in recs[i:i + CHUNK]:
-            out.write(f"{c}\t{p}\t{r}\t{a}\tNA\tNA\tVEP_FAIL\n")
-        continue
-    got = res if isinstance(res, list) else []
-    for j, (c, p, r, a, _) in enumerate(recs[i:i + CHUNK]):
-        if j >= len(got):
-            out.write(f"{c}\t{p}\t{r}\t{a}\tNA\tUNRESOLVED\n")
-            continue
-        v = got[j]
-        rs = "NA"
-        for col in v.get("colocated_variants", []):
-            cid = str(col.get("id", ""))
-            if cid.startswith("rs"):
-                rs = cid
-                break
-        verdict = "COMMON_GERMLINE_PROXY" if rs != "NA" else "RARE_PRIVATE"
-        if verdict == "RARE_PRIVATE":
-            rare += 1
-        out.write(f"{c}\t{p}\t{r}\t{a}\t{rs}\t{verdict}\n")
-    out.flush()
-    print(f"done {min(i + CHUNK, len(recs))}/{len(recs)} rare={rare}", flush=True)
-    time.sleep(1)
-out.close()
-print(f"DBSNP_DONE rare={rare}")
+def verdict_for(v):
+    for col in v.get("colocated_variants", []):
+        if str(col.get("id", "")).startswith("rs"):
+            return col["id"], "COMMON_GERMLINE_PROXY"
+    return "NA", "RARE_PRIVATE"
+
+
+def main():
+    rows = list(csv.DictReader(open(INOUT), delimiter="\t"))
+    print(f"records: {len(rows)}", flush=True)
+    chunks = [[f"{r['chrom']} {r['pos']} {r['pos']} {r['ref']}/{r['alt']} +"
+               for r in rows[i:i + CHUNK]]
+              for i in range(0, len(rows), CHUNK)]
+    out_rows = []
+    with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+        for n, (chunk_rows, res) in enumerate(
+                zip([rows[i:i + CHUNK] for i in range(0, len(rows), CHUNK)],
+                    ex.map(post, chunks)), 1):
+            got = res if isinstance(res, list) else []
+            for j, r in enumerate(chunk_rows):
+                if j < len(got):
+                    rs, verdict = verdict_for(got[j])
+                else:
+                    rs, verdict = "NA", "UNRESOLVED"
+                out_rows.append((r["chrom"], r["pos"], r["ref"], r["alt"], rs, verdict))
+            print(f"chunk {n}/{len(chunks)}", flush=True)
+    with open(INOUT, "w", newline="") as f:
+        w = csv.writer(f, delimiter="\t")
+        w.writerow(["chrom", "pos", "ref", "alt", "rsid", "verdict"])
+        w.writerows(out_rows)
+    from collections import Counter
+    print(Counter(v for *_, v in out_rows), "DBSNP_DONE")
+
+
+if __name__ == "__main__":
+    main()

@@ -4,15 +4,15 @@ Strong <50 nM, weak <500 nM (IEDB convention). v1 used <500 alone — now strati
 """
 import pandas as pd
 from pathlib import Path
-inp = Path("results/neoantigens/mhcflurry_A0206.csv")
-out = Path("results/neoantigens/ranked_candidates.csv")
+inp = Path("results-RUNTIME/neoantigens/mhcflurry_HLA-A0206.csv")
+out = Path("results-RUNTIME/neoantigens/ranked_candidates.csv")
 if not inp.exists():
-    # preliminary table from v1 values so repo has a runnable result pre-full-run
+    # fallback mini-table (curated values, A*02:06): control binder + SDF4-family outcome
     df = pd.DataFrame([
         {"peptide": "LLFGYPVYV", "allele": "HLA-A*02:06", "affinity_nM": 10.31, "class": "strong binder (<50 nM)", "priority": 1},
-        {"peptide": "SYFPEITHI", "allele": "HLA-A*02:06", "affinity_nM": 746.85, "class": "non-binder (>500 nM)", "priority": 99},
+        {"peptide": "SAKEMQRWV", "allele": "HLA-A*02:06", "affinity_nM": 8426.37, "class": "non-binder (>500 nM)", "priority": 99},
     ])
-    print("MHCflurry output absent — writing v1 preliminary table (to be replaced by full run).")
+    print("MHCflurry output absent — writing curated fallback (see 06_Neoantigens/sdf4_validation_out.csv).")
 else:
     df = pd.read_csv(inp)
     aff = [c for c in df.columns if "affinity" in c.lower() or "ic50" in c.lower()][0]

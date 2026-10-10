@@ -1,0 +1,11 @@
+rank,gene_symbol,ensembl_gene,mutation,peptide,affinity_nM_A0206,presentation_percentile,dbsnp,note
+1,ECT2,ENSG00000114346,L34F,FLIGSTSYV,10.14,0.026739130434805247,novel/private,requires expression + Sanger confirmation
+2,CUL4A,ENSG00000139842,R158L,FLFLDLTYV,10.35,0.021413043478275995,novel/private,requires expression + Sanger confirmation
+3,AP2M1,ENSG00000161203,G12W,FIYNHKWEV,10.68,0.018722826087000044,novel/private,requires expression + Sanger confirmation
+4,MACROH2A1,ENSG00000113648,V52I,YMAAILEYL,10.86,0.001385869565197595,novel/private,requires expression + Sanger confirmation
+5,UTP14C,ENSG00000253797,G85V,VLADLLEPV,11.63,0.06972826086955308,novel/private,requires expression + Sanger confirmation
+6,MCUB,ENSG00000005059,M248I,YSWDIIEPV,11.65,0.15271739130436401,novel/private,requires expression + Sanger confirmation
+7,SLC16A4,ENSG00000168679,A343D,LLSDLAYFI,11.8,0.033043478260879056,novel/private,requires expression + Sanger confirmation
+8,CYB561,ENSG00000008283,A209P,WLVGFSPFL,12.13,0.1464673913043555,novel/private,requires expression + Sanger confirmation
+9,VPS13B,ENSG00000132549,E1147V,FVIPRPILV,12.14,0.00027173913044009623,novel/private,requires expression + Sanger confirmation
+10,CAND1,ENSG00000111530,C71Y,YLGPLVSKV,12.2,0.0004891304347580672,novel/private,requires expression + Sanger confirmation

@@ -79,3 +79,9 @@
 - LLFGYPVYV -> 0 hits: synthetic positive control (A*02:06-restricted, reproduced 10.31 nM).
 - SYFPEITHI -> JAK1_HUMAN exact 9mer: must NOT be used as negative control (v1 error confirmed).
   (06_Neoantigens/proteome_attribution.tsv)
+
+## Germline filter + Table 1 (this session)
+- dbSNP rsID filter reconciled: 4,265 = 2,126 COMMON proxy (49.9%) + 1,815 RARE (42.6%) + 324 UNRESOLVED.
+- SDF4 chr1:1223936 carries rs1384393162 -> COMMON germline. THIRD strike (QUAL~0, GATK-absent, germline): DEFINITIVELY EXCLUDED.
+- IEDB-validated YLIDSAHKI (GSTM1 N85S) also germline-filtered out (GSTM1 famously polymorphic) -> filter demonstrably matters.
+- Table 1 (06_Neoantigens/Table1_top10_rare_binders.csv): 1,083 rare strong binders; top-10 ECT2/CUL4A/AP2M1/MACROH2A1/UTP14C/MCUB/SLC16A4/CYB561/VPS13B/CAND1, all <13 nM. Expression (StringTie TPM) + Sanger still required.

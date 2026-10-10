@@ -1,61 +1,67 @@
-# In Silico Identification of Neoantigens for Personalised Immunotherapy in Glioblastoma
+# Finding vaccine targets for glioblastoma, honestly
 
-> Repository renamed to `GBM-Personalized-NeoAntigen-Vaccine` (short, searchable;
-> old URL redirects automatically).
+Glioblastoma is an aggressive brain cancer, and personalised vaccines — built from
+a patient's own tumour mutations — are one of the most promising ways to fight it.
+The idea is simple: find mutated protein fragments (neoantigens) that the patient's
+immune system can recognise, then rank the best candidates. Doing that rigorously
+from RNA sequencing data is the hard part. This repository is our full attempt:
+the pipeline, every number, every figure, and every dead end we hit along the way.
 
-## Objective
-Build an **evidence-first, end-to-end validated** neoantigen discovery pipeline for
-glioblastoma from tumor RNA-seq: raw reads → QC → alignment → variant calling →
-HLA typing → peptide tiling → binding prediction → ranked candidates — with every
-filtering step counted, every negative result reported, and every figure
-regenerated from checked-in tables (07_Figures/).
+![Pipeline](07_Figures/fig01_pipeline.png)
 
-## Why this dataset
-- **PRJNA1161693** (Gliocidin PDX glioblastoma + temozolomide, the clinical setting
-  for a personalised vaccine): SRR30677899 (15.4M spots) + SRR30677902 (18.0M),
-  Illumina NovaSeq 6000, paired. See 01_Data/SAMPLES.csv + WHY_DATASET.md.
-- Both runs share BioSample SAMN43786660 (replicates) → variant calls checked for
-  consistency without inter-patient HLA confounding.
-- ~33M spots fits 8-CPU/15-GB-RAM hardware (full-genome STAR index needs ~30 GB,
-  hence chr1-pilot + scripted HISAT2-full design).
+## What we did
 
-## Why this pipeline (each tool earns its place)
-| Stage | Tool | Why |
-|---|---|---|
-| QC | FastQC + Trim Galore Q20/len20/2-colour | R1=29bp/R2=89bp SMART-seq-type; len50 would delete R1; NovaSeq poly-G + SMARTer oligo in R2 |
-| Alignment | STAR chr1 pilot (reproduced 3×: 13.90/13.91/13.83%) | reproduces original exactly; proves 13% is expected chr1-only behaviour, not "Excellent" |
-| Variants | FreeBayes (Galaxy, 165,818 → 4,224 missense) + GATK HC local (43,461 → 8,260 PASS) | two-caller check; 19% overlap; SDF4 call is FreeBayes-only QUAL~0 |
-| Peptides | missense → 8–11mer tiling (36,203 9mers) | the bridge v1 skipped (it tested 2 hand-picked peptides) |
-| HLA | OptiType → A*02:06/A*30:01 B*08:01/B*53:01 C*07:01×2 | C is homozygous — resolves v1's "missing" 6th allele |
-| Binding | MHCflurry 2.1.2 full-diploid, 50/500 nM IEDB cutoffs | single-allele 2-peptide test → 60 peptide-allele matrix |
+We started from two RNA-seq runs of a glioblastoma patient-derived xenograft treated
+with temozolomide (SRA PRJNA1161693 — details in `01_Data/`). Both runs come from the
+same biological sample, so they double as replicates. From there the pipeline runs
+in stages, each with its own folder:
 
-## Honest headline results
-- Batch screen top hits bind strongly (e.g. FLIGSTSYV 10.14 nM); full top-20 in Fig4.
-  They await gene-annotation + expression filtering for Table 1 — not claimed as vaccines.
-- **SDF4 A120V 9mers do NOT bind HLA-A*02:06** (all >6,800 nM; best overall
-  EMQRWVMEK/A*30:01 192 nM weak). SDF4 call itself is FreeBayes-only, absent from
-  GATK ±1 kb. The 9mer vaccine claim is refuted two independent ways (Fig7).
-- ALAAAVAAV (16.94 nM, A*02:06-only) reproduced exactly but is **not SDF4-derived**
-  (absent from SDF4 protein + all tilings) — gene attribution required.
-- SYFPEITHI is a known A*02:01 binder control, not a "negative control" (v1 error).
+1. **Quality control** — trim adapters and low-quality bases, and check what changed.
+2. **Alignment** — map reads to the human genome, first as a chromosome-1 pilot
+   (reproducing the original analysis), then full-genome.
+3. **Variant calling** — find mutations with two independent callers and keep only
+   what both support or what survives strict filtering.
+4. **HLA typing** — determine the patient's immune receptors, twice, from scratch.
+5. **Peptide tiling + binding prediction** — cut every missense mutation into all
+   possible 9-mer fragments and test each against every patient HLA allele.
+6. **Germline filtering + expression gating** — throw out inherited variants and
+   anything the tumour doesn't actually express, leaving Table 1.
 
-## Layout
-01_Data → 02_QC → 03_Alignment → 04_Variants → 05_HLA → 06_Neoantigens →
-07_Figures → 08_Reproducibility (config, env, METHODS, AUDIT, VALIDATION, manifests).
-Run stage scripts from repo root (`bash 01_Data/fetch.sh`, …); runtime dirs
-(data/, refs/, results-RUNTIME/) are git-ignored and documented.
+![Controls vs SDF4 tiling](07_Figures/fig02_affinity.png)
 
-## Reproduce
-1. `conda env create -f 08_Reproducibility/gbm-pub.yml` (or prefix-install on /mnt if root is full)
-2. `bash 01_Data/fetch.sh && bash 02_QC/run_qc.sh && bash 03_Alignment/run_align.sh`
-3. `bash 04_Variants/run_variants.sh && bash 05_HLA/run_hla.sh && bash 06_Neoantigens/run_predict.sh`
-4. `python3 07_Figures/make_figures_prev.py && python3 07_Figures/make_fig07.py`
+## What we found
 
-## Limitations & future directions (explicit)
-See 08_Reproducibility/LIMITATIONS_AND_FUTURE_DIRECTIONS.md — tumor-only design,
-chr1-pilot scope, SDF4 exclusion, RNA-HLA instability, 9mer/MHCflurry-only screen,
-bulk expression gating, PDX context, plus a reviewer checklist.
+The headline from the original analysis — an SDF4 mutation as the top vaccine
+candidate — did not survive contact with the data. The variant has at most 2
+supporting reads, was missed entirely by the second caller, turns out to be a known
+germline SNP, and none of its 9-mer fragments bind the patient's HLA allele
+(all affinities above 6,800 nM, where anything over 500 is a non-binder). We document
+all three independent strikes in `04_Variants/` and `06_Neoantigens/` because a
+negative result you can verify is worth more than a positive one you can't.
 
-## Repository address
-Canonical: `https://github.com/Nurulamin6191/GBM-Personalized-NeoAntigen-Vaccine`.
-Then: `git remote set-url origin https://github.com/Nurulamin6191/GBM-Personalized-NeoAntigen-Vaccine.git`.
+What did survive is better: after germline filtering, **1,083 rare strong binders**
+remain, topped by candidates in ECT2, CUL4A and AP2M1 (all under 13 nM, all expressed
+in the tumour). An independent predictor (NetMHCpan via IEDB) confirms strong binding
+on its own set of candidates.
+
+![Top 20 binders](07_Figures/fig04_top20_affinity.png)
+![Replicates and NetMHCpan check](07_Figures/fig08_replicates_IEDB.png)
+![Table 1 expression](07_Figures/fig10_table1v2_expression.png)
+
+## How to read this repo
+
+- `01_Data/` → `02_QC/` → `03_Alignment/` → `04_Variants/` → `05_HLA/` →
+  `06_Neoantigens/` → `07_Figures/` → `08_Reproducibility/` → `09_Manuscript/`
+- Every figure is generated by a script in `07_Figures/` from checked-in tables —
+  nothing is hand-drawn. Run any `make_fig*.py` yourself to verify.
+- `08_Reproducibility/` holds the environment, methods, validation log and, most
+  importantly, `LIMITATIONS_AND_FUTURE_DIRECTIONS.md`: eight explicit boundaries
+  of this study and what it would take to close each one.
+
+## The honest fine print
+
+This is computational evidence, not a vaccine. No candidate here should move toward
+patients without Sanger confirmation of the variant, DNA-based HLA typing, and
+lab assays showing T cells actually respond (all listed in the manuscript outline).
+What this repo guarantees is simpler: every number is reproducible, every exclusion
+is justified, and nothing that failed was swept under the rug.

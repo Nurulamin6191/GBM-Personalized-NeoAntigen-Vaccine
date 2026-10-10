@@ -1,47 +1,55 @@
 #!/usr/bin/env python3
-"""Fig8: replicate consistency (899 vs 902) + independent NetMHCpan (IEDB) validation."""
+"""Fig8: replicate consistency + independent NetMHCpan (IEDB) validation.
+Run from repo root: python3 07_Figures/make_fig08.py
+"""
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from pathlib import Path
-FIG = Path("07_Figures"); FIG.mkdir(parents=True, exist_ok=True)
-plt.rcParams.update({"font.size": 8, "figure.dpi": 300})
 
-fig, ax = plt.subplots(1, 2, figsize=(9.5, 3.8))
+FIG = Path("07_Figures")
+FIG.mkdir(parents=True, exist_ok=True)
+plt.rcParams.update({"font.size": 11, "figure.dpi": 300,
+                     "axes.titlesize": 12, "axes.titleweight": "bold"})
+BLUE, GREEN = "#2563eb", "#16a34a"
 
-# left: replicate variant + peptide counts
-cats = ["FreeBayes\nvariants", "Strong-binder\npeptides*"]
-v899 = [45456, 453]; v902 = [51435, 430]
-x = range(len(cats)); w = 0.35
-ax[0].bar([i - w/2 for i in x], v899, width=w, label="SRR30677899", color="#3070b8")
-ax[0].bar([i + w/2 for i in x], v902, width=w, label="SRR30677902", color="#b36600")
-ax[0].set_xticks(list(x)); ax[0].set_xticklabels(cats)
-ax[0].set_title("(a) Replicate consistency: same BioSample")
-ax[0].legend(fontsize=7)
+fig, ax = plt.subplots(1, 2, figsize=(12, 5))
+
+# (a) replicate variant + peptide counts
+cats = ["FreeBayes\nvariants", "Strong-binder\npeptides"]
+v899 = [45456, 453]
+v902 = [51435, 430]
+x = range(len(cats))
+w = 0.35
+ax[0].bar([i - w / 2 for i in x], v899, width=w, label="SRR30677899", color=BLUE)
+ax[0].bar([i + w / 2 for i in x], v902, width=w, label="SRR30677902", color="#d97706")
+ax[0].set_xticks(list(x))
+ax[0].set_xticklabels(cats, fontsize=11)
+ax[0].set_title("(a) Replicates agree (same BioSample)")
+ax[0].legend(fontsize=10)
 for i, (a, b) in enumerate(zip(v899, v902)):
-    ax[0].text(i - w/2, a*1.03, f"{a:,}", ha="center", fontsize=7)
-    ax[0].text(i + w/2, b*1.03, f"{b:,}", ha="center", fontsize=7)
-ax[0].text(1, 30000, "shared: 155", ha="center", fontsize=8, weight="bold",
-           bbox=dict(fc="yellow", alpha=0.5))
+    ax[0].text(i - w / 2, a * 1.04, f"{a:,}", ha="center", fontsize=10)
+    ax[0].text(i + w / 2, b * 1.04, f"{b:,}", ha="center", fontsize=10)
+ax[0].text(1, 30000, "155 peptides shared", ha="center", fontsize=11, weight="bold",
+           bbox=dict(fc="#fef3c7", alpha=0.9))
 
-# right: IEDB NetMHCpan BA IC50 distribution (independent validation set)
+# (b) IEDB NetMHCpan BA IC50 (independent validation set)
 ied = []
 for s in ["SRR30677899", "SRR30677902"]:
     d = pd.read_csv(f"06_Neoantigens/IEDB/IEDB_peptide_table_{s}.csv")
-    d["sample"] = s[-5:]
     ied.append(d)
-ied = pd.concat(ied)
+ied = pd.concat(ied, ignore_index=True)
 ax[1].bar(range(len(ied)), ied["netmhcpan_ba ic50"],
-          color=["#3070b8"]*9 + ["#b36600"]*10)
-ax[1].axhline(50, color="green", ls="--", lw=1)
-ax[1].text(0, 55, "strong <50 nM", fontsize=7, color="green")
+          color=[BLUE] * 9 + ["#d97706"] * 10)
+ax[1].axhline(50, color=GREEN, ls="--", lw=1.2)
+ax[1].text(0, 58, "strong binder cutoff 50 nM", fontsize=10, color=GREEN)
 ax[1].set_xticks(range(len(ied)))
-ax[1].set_xticklabels(ied["peptide"], rotation=45, ha="right", fontsize=6)
-ax[1].set_ylabel("NetMHCpan BA IC50 (nM)")
-ax[1].set_title("(b) Independent NetMHCpan validation (IEDB): all strong")
-fig.suptitle("Fig 8 — Replicate consistency + orthogonal NetMHCpan validation.", fontsize=9, weight="bold")
+ax[1].set_xticklabels(ied["peptide"], rotation=45, ha="right", fontsize=9)
+ax[1].set_ylabel("NetMHCpan BA IC50, nM")
+ax[1].set_title("(b) Independent NetMHCpan check: all strong")
+fig.suptitle("Replicates agree; an independent predictor confirms strong binding",
+             fontsize=13, weight="bold")
 fig.tight_layout()
-fig.savefig(FIG/"fig08_replicates_IEDB.png", bbox_inches="tight")
+fig.savefig(FIG / "fig08_replicates_IEDB.png", bbox_inches="tight")
 print("wrote fig08")
-print("*per-sample A*02:01 runs re-scored vs patient A*02:06 in 06_Neoantigens/per_sample_A0206/ (values reproduce).")

@@ -85,3 +85,14 @@
 - SDF4 chr1:1223936 carries rs1384393162 -> COMMON germline. THIRD strike (QUAL~0, GATK-absent, germline): DEFINITIVELY EXCLUDED.
 - IEDB-validated YLIDSAHKI (GSTM1 N85S) also germline-filtered out (GSTM1 famously polymorphic) -> filter demonstrably matters.
 - Table 1 (06_Neoantigens/Table1_top10_rare_binders.csv): 1,083 rare strong binders; top-10 ECT2/CUL4A/AP2M1/MACROH2A1/UTP14C/MCUB/SLC16A4/CYB561/VPS13B/CAND1, all <13 nM. Expression (StringTie TPM) + Sanger still required.
+
+## Full-genome HISAT2 (this session, GRCh38 primary, 4.2G index)
+- Overall alignment: 899 44.72% / 902 44.82% (vs 13.9% chr1-unique). Concordantly paired only
+  1.35%/1.44%; 98.5% pairs discordant; singletons 43.2%. Cause: 29bp R1 cannot pair uniquely.
+  Honest consequence: library structure caps paired-end variant sensitivity genome-wide;
+  expression (StringTie TPM, singletons count) still valid for gating Table 1.
+
+## Expression gating (this session, StringTie on full-genome HISAT2 BAMs, 63,241 genes)
+- 1,047/1,083 rare binders expressed (TPM>=1 either replicate); 36 dropped.
+- Table 1 v2 order unchanged; TPM range 2.6-95 (AP2M1 94.95, MACROH2A1 88.76).
+  (06_Neoantigens/Table1v2_expressed.csv, Fig 10)

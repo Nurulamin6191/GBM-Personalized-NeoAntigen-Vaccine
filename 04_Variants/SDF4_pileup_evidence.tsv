@@ -1,0 +1,7 @@
+# SDF4 chr1:1223936 G>A (p.Ala120Val) read support — IGV-equivalent counts, 2026-10-10
+# Columns: bam, contig_naming, depth_at_site, ref_reads, alt_reads, VAF, caller_call, QUAL
+bam	contig	depth	ref	alt	VAF	call	QUAL
+SRR_marked_dups.bam(Galaxy)	1	35	33	2	0.057	FreeBayes het	7.06e-09
+SRR30677899.split.bam(local GATK chain)	1	13	13	0	0.000	GATK no-call	NA
+# Interpretation: max 2 ALT reads (VAF~6%), QUAL~0, caller-dependent, GATK-absent.
+# Verdict: SUB-THRESHOLD — requires IGV visual + Sanger validation; excluded as lead candidate.

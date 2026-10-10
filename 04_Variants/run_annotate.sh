@@ -11,4 +11,4 @@ for VCF in results/variants/*.PASS.vcf.gz; do
     --force_overwrite || echo "VEP failed for $S — see logs; rerun with --database for online mode"
 done
 echo "== tiling missense SNVs → 9mers (demo of bridge; full 8-11mer + expression filter in 04b notebook) =="
-python3 workflow/scripts/vep_to_peptides.py || echo "tiling script pending VEP output"
+python3 04_Variants/vep_to_peptides.py || echo "tiling script pending VEP output"

@@ -50,3 +50,32 @@
 - STAR full-genome index needs ~30GB RAM (have 15GB) → chr1 STAR pilot + HISAT2-full deferred.
 - VEP via Docker deferred (conda VEP pulls full Perl stack); SnpEff/FreeBayes Galaxy outputs used as evidence.
 - Dataset unchanged (both SRRs); no downsampling needed — 151G free on /mnt sufficed.
+
+## Replicate HLA + per-sample re-score (this session)
+- OptiType 1.5.0 RNA re-run: 899 EXACT match to prior (A*02:06/A*30:01 B*08:01/B*53:01
+  C*07:01 hom, 29 reads, obj 28.478). 902 (20 reads): A*02:01/A*30:01 B*08:01/B*58:01
+  C*07:01 hom. Same BioSample, different call -> RNA-based HLA unstable at 20-29 reads.
+  Primary profile = 899 consensus (higher reads, independently reproduced 2x);
+  DNA-based HLA confirmation listed as required follow-up.
+- BUG FIX: per-sample high-affinity tables were run vs HLA-A*02:01 (script default),
+  not patient A*02:06. Re-scored all 453+430 peptides vs A*02:06 locally
+  (06_Neoantigens/per_sample_A0206/): values reproduce pooled run; 899∩902 share 155 peptides.
+- IEDB tables = independent NetMHCpan EL/BA validation (BA IC50 2.5-12 nM, all strong),
+  largely non-overlapping peptide set -> orthogonal support (Fig 8).
+
+## Genome-wide VCF provenance flag (this session)
+- FreeBayes VCF spans 165 contigs genome-wide (chr1: 14,411; chr2: 13,194; ...),
+  yet Galaxy BAMs in that folder are chr1-only (single @SQ contig 1).
+  The VCF therefore came from a FULL-genome alignment whose BAM is not archived.
+  Consequence: variant evidence is genome-wide (good for discovery) but alignment
+  params for the VCF are unrecoverable -> our local chr1 GATK chain is the only
+  fully-provenanced variant call. Full-genome HISAT2 re-alignment (refs/full/)
+  will close this gap.
+
+## Proteome attribution (this session, UniProt UP000005640 reviewed, 20,652 proteins)
+- SAKEMQRWI (wild-type SDF4 window) -> CAB45_HUMAN (SDF4 gene product). Tiling provenance CONFIRMED.
+- Mutant SAKEMQRWV -> 0 hits (expected: somatic mutant absent from reference).
+- ALAAAVAAV -> 0 hits: non-human/synthetic, gene unattributed. Treat as synthetic binder control.
+- LLFGYPVYV -> 0 hits: synthetic positive control (A*02:06-restricted, reproduced 10.31 nM).
+- SYFPEITHI -> JAK1_HUMAN exact 9mer: must NOT be used as negative control (v1 error confirmed).
+  (06_Neoantigens/proteome_attribution.tsv)

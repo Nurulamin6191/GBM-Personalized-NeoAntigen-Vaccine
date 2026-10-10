@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """VEP tab → mutant 8–11mer tiling.
 Bridge added in rebuild: v1 jumped from VCF straight to 2 hand-picked peptides.
-Usage: python3 workflow/scripts/vep_to_peptides.py [vep_tab] [out_csv]
+Usage: python3 04_Variants/vep_to_peptides.py [vep_tab] [out_csv]
 Falls back to demo rows when VEP output absent (keeps repo runnable pre-full-run).
 """
 import csv, sys, itertools

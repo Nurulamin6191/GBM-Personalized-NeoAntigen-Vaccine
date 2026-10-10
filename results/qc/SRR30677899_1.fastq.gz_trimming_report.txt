@@ -1,0 +1,76 @@
+SUMMARISING RUN PARAMETERS
+=========================
+Input filename: SRR30677899_1.fastq.gz
+Trimming mode: paired-end
+Trim Galore version: 2.3.0
+2-colour high quality G-trimming enabled, with quality cutoff: --nextseq-trim=20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'CTGTCTCTTATA' (user-specified or auto-detected)
+Maximum trimming error rate: 0.1
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Removing Ns from the end of reads
+Output file will be GZIP compressed
+
+
+Trim Galore 2.3.0 — adapter trimming built in
+This is cutadapt 4.0 (compatible; for MultiQC backwards compatibility)
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA SRR30677899_1.fastq.gz
+Processing reads on 1 core in single-end mode ...
+
+=== Summary ===
+
+Total reads processed:           15,434,896
+Reads with adapters:              4,504,258 (29.2%)
+Reads written (passing filters): 15,434,896 (100.0%)
+
+Total basepairs processed:    447,611,984 bp
+Quality-trimmed:                5,185,014 bp (1.2%)
+Total written (filtered):     434,009,563 bp (97.0%)
+
+=== Adapter 1 ===
+
+Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 4504258 times.
+
+No. of allowed errors:
+1-9 bp: 0; 10-12 bp: 1
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	1014011	3858724.0	0	1014011
+2	3304455	964681.0	0	3304455
+4	167179	60292.6	0	167179
+5	3583	15073.1	0	3583
+6	11856	3768.3	0	11856
+7	297	942.1	0	297
+8	666	235.5	0	666
+9	360	58.9	0	360
+10	471	14.7	1	471
+11	362	3.7	1	362
+12	98	0.9	1	98
+13	67	0.2	1	67
+14	145	0.1	1	145
+15	102	0.0	1	102
+16	86	0.0	1	86
+17	80	0.0	1	80
+18	87	0.0	1	87
+19	140	0.0	1	140
+20	55	0.0	2	55
+21	62	0.0	2	62
+22	9	0.0	2	9
+23	9	0.0	2	9
+24	22	0.0	2	22
+25	26	0.0	2	26
+26	10	0.0	2	10
+27	9	0.0	2	9
+28	4	0.0	2	4
+29	7	0.0	2	7
+
+
+RUN STATISTICS FOR INPUT FILE: SRR30677899_1.fastq.gz
+=============================================
+15434896 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	132979 (0.9%)
+Sequences removed because they were longer than the upper length cutoff:	0 (0.0%)
+Sequences removed because of too many N bases:	0 (0.0%)
+

@@ -1,0 +1,148 @@
+SUMMARISING RUN PARAMETERS
+=========================
+Input filename: SRR30677899_2.fastq.gz
+Trimming mode: paired-end
+Trim Galore version: 2.3.0
+2-colour high quality G-trimming enabled, with quality cutoff: --nextseq-trim=20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'CTGTCTCTTATA' (user-specified or auto-detected)
+Maximum trimming error rate: 0.1
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Removing Ns from the end of reads
+Output file will be GZIP compressed
+
+
+Trim Galore 2.3.0 — adapter trimming built in
+This is cutadapt 4.0 (compatible; for MultiQC backwards compatibility)
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA SRR30677899_2.fastq.gz
+Processing reads on 1 core in single-end mode ...
+
+=== Summary ===
+
+Total reads processed:           15,434,896
+Reads with adapters:              5,210,413 (33.8%)
+Reads written (passing filters): 15,434,896 (100.0%)
+
+Total basepairs processed:   1,373,705,744 bp
+Quality-trimmed:               21,025,879 bp (1.5%)
+Total written (filtered):    1,345,013,154 bp (97.9%)
+
+=== Adapter 1 ===
+
+Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 5210413 times.
+
+No. of allowed errors:
+1-9 bp: 0; 10-12 bp: 1
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	3608344	3858724.0	0	3608344
+2	1440827	964681.0	0	1440827
+4	117997	60292.6	0	117997
+5	16474	15073.1	0	16474
+6	8362	3768.3	0	8362
+7	3023	942.1	0	3023
+8	1904	235.5	0	1904
+9	2295	58.9	0	2295
+10	1210	14.7	1	1210
+11	358	3.7	1	358
+12	165	0.9	1	165
+13	111	0.2	1	111
+14	121	0.1	1	121
+15	122	0.0	1	122
+16	118	0.0	1	118
+17	114	0.0	1	114
+18	101	0.0	1	101
+19	125	0.0	1	125
+20	118	0.0	2	118
+21	123	0.0	2	123
+22	103	0.0	2	103
+23	148	0.0	2	148
+24	117	0.0	2	117
+25	150	0.0	2	150
+26	142	0.0	2	142
+27	122	0.0	2	122
+28	121	0.0	2	121
+29	117	0.0	2	117
+30	142	0.0	3	142
+31	122	0.0	3	122
+32	101	0.0	3	101
+33	98	0.0	3	98
+34	119	0.0	3	119
+35	129	0.0	3	129
+36	155	0.0	3	155
+37	118	0.0	3	118
+38	118	0.0	3	118
+39	129	0.0	3	129
+40	95	0.0	4	95
+41	79	0.0	4	79
+42	196	0.0	4	196
+43	104	0.0	4	104
+44	103	0.0	4	103
+45	123	0.0	4	123
+46	112	0.0	4	112
+47	119	0.0	4	119
+48	184	0.0	4	184
+49	168	0.0	4	168
+50	173	0.0	5	173
+51	125	0.0	5	125
+52	124	0.0	5	124
+53	172	0.0	5	172
+54	91	0.0	5	91
+55	127	0.0	5	127
+56	182	0.0	5	182
+57	163	0.0	5	163
+58	121	0.0	5	121
+59	149	0.0	5	149
+60	137	0.0	6	137
+61	107	0.0	6	107
+62	132	0.0	6	132
+63	131	0.0	6	131
+64	121	0.0	6	121
+65	106	0.0	6	106
+66	155	0.0	6	155
+67	128	0.0	6	128
+68	79	0.0	6	79
+69	113	0.0	6	113
+70	139	0.0	7	139
+71	146	0.0	7	146
+72	102	0.0	7	102
+73	137	0.0	7	137
+74	130	0.0	7	130
+75	92	0.0	7	92
+76	92	0.0	7	92
+77	95	0.0	7	95
+78	112	0.0	7	112
+79	140	0.0	7	140
+80	134	0.0	8	134
+81	122	0.0	8	122
+82	97	0.0	8	97
+83	99	0.0	8	99
+84	90	0.0	8	90
+85	85	0.0	8	85
+86	124	0.0	8	124
+87	131	0.0	8	131
+88	106	0.0	8	106
+89	58	0.0	8	58
+
+
+RUN STATISTICS FOR INPUT FILE: SRR30677899_2.fastq.gz
+=============================================
+15434896 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	132979 (0.9%)
+Sequences removed because they were longer than the upper length cutoff:	0 (0.0%)
+Sequences removed because of too many N bases:	0 (0.0%)
+
+=== Paired-end validation ===
+
+Number of sequence pairs analysed:  15,434,896
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (0.86%):
+                                132,979
+Number of pairs removed for N content (0.00%):
+                                      0
+
+Unpaired read 1 kept:                 0
+Unpaired read 2 kept:             6,383
+

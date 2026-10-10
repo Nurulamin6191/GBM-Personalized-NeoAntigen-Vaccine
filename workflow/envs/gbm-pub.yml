@@ -1,0 +1,28 @@
+name: gbm-pub
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.10
+  - sra-tools=3.1
+  - fastqc=0.12
+  - trim-galore=0.6.10
+  - cutadapt=4.6
+  - star=2.7.11b
+  - hisat2=2.2.1
+  - samtools=1.19
+  - bcftools=1.19
+  - picard=3.1
+  # Heavy / installed in phase 2 after lean env works (root disk was full):
+  # - gatk4=4.5
+  # - ensembl-vep=111  # prefer docker: ensemblorg/ensembl-vep:release_111
+  - multiqc=1.19
+  - stringtie=2.2.1
+  - pip
+  - pip:
+    - mhcflurry==2.1.2
+    - mhctools==1.9.2
+    - pandas==2.2
+    - matplotlib==3.8
+    - seaborn==0.13
+    - biopython==1.83

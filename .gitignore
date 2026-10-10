@@ -1,0 +1,15 @@
+data/sra/
+data/fastq/
+refs/
+*.bam
+*.bai
+*.sam
+*.fastq
+*.fastq.gz
+*.sra
+logs/*.log
+__pycache__/
+.ipynb_checkpoints/
+.conda_envs/
+.conda_pkgs/
+CONDA_ENV/

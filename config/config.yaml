@@ -1,0 +1,47 @@
+# GBM Neoantigen Discovery — Full Re-run Config
+project: 00_Discovery_Neoantigens_Glioblastoma
+title: "In Silico Identification of Neoantigens for Personalised Immunotherapy in Glioblastoma"
+genome:
+  build: GRCh38.p14
+  source: ENSEMBL_release_111
+  fasta_chr1: "refs/Homo_sapiens.GRCh38.dna.chromosome.1.fa.gz"
+  fasta_full: "refs/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz"
+  gtf: "refs/Homo_sapiens.GRCh38.111.gtf.gz"
+  star_index_chr1: "refs/star_chr1/"
+  hisat2_index_full: "refs/hisat2_full/"
+samples:
+  - run: SRR30677899
+    sample: SAMN43786660
+    study: PRJNA1161693
+    condition: "PDX-161010-1, Temozolomide"
+    platform: "Illumina NovaSeq 6000"
+    layout: PAIRED
+    reads: 15434896
+  - run: SRR30677902
+    sample: SAMN43786660
+    study: PRJNA1161693
+    condition: "PDX-161010-1, Temozolomide"
+    layout: PAIRED
+    reads: 17969839
+params:
+  trim:
+    quality: 20
+    adapter: auto
+    min_len: 50
+  align:
+    primary: hisat2_full_genome      # publication-grade (low RAM); STAR kept for chr1 pilot reproducibility
+    pilot: star_chr1
+    threads: 8
+  variant:
+    caller: "GATK HaplotypeCaller (RNA-seq best practices) + Mutect2 tumor-only attempted; hard-filtered; dbSNP-flagged"
+    min_DP: 10
+    min_AF: 0.05
+  hla:
+    tool: OptiType
+    alleles_reported: ["HLA-A*02:06", "HLA-A*30:01", "HLA-B*08:01", "HLA-B*53:01", "HLA-C*07:01", "HLA-C*missing-second-allele-TBD"]
+  neoantigen:
+    lengths: [8, 9, 10, 11]
+    tools: ["MHCflurry-2.1", "NetMHCpan-4.1 (validation, external)"]
+    strong_binder_nM: 50
+    weak_binder_nM: 500
+    test_allele_first: "HLA-A*02:06"

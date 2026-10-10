@@ -1,0 +1,73 @@
+SUMMARISING RUN PARAMETERS
+=========================
+Input filename: SRR30677902_1.fastq.gz
+Trimming mode: paired-end
+Trim Galore version: 2.3.0
+2-colour high quality G-trimming enabled, with quality cutoff: --nextseq-trim=20
+Quality encoding type selected: ASCII+33
+Adapter sequence: 'AGATCGGAAGAGC' (user-specified or auto-detected)
+Maximum trimming error rate: 0.1
+Minimum required adapter overlap (stringency): 1 bp
+Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
+Removing Ns from the end of reads
+Output file will be GZIP compressed
+
+
+Trim Galore 2.3.0 — adapter trimming built in
+This is cutadapt 4.0 (compatible; for MultiQC backwards compatibility)
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a AGATCGGAAGAGC SRR30677902_1.fastq.gz
+Processing reads on 1 core in single-end mode ...
+
+=== Summary ===
+
+Total reads processed:           17,969,839
+Reads with adapters:              2,144,954 (11.9%)
+Reads written (passing filters): 17,969,839 (100.0%)
+
+Total basepairs processed:    521,125,331 bp
+Quality-trimmed:                8,535,757 bp (1.6%)
+Total written (filtered):     509,602,129 bp (97.8%)
+
+=== Adapter 1 ===
+
+Sequence: AGATCGGAAGAGC; Type: regular 3'; Length: 13; Trimmed: 2144954 times.
+
+No. of allowed errors:
+1-9 bp: 0; 10-13 bp: 1
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+1	1835408	4492459.8	0	1835408
+3	100731	280778.7	0	100731
+4	203113	70194.7	0	203113
+5	4898	17548.7	0	4898
+8	60	274.2	0	60
+9	108	68.5	0	108
+10	52	17.1	1	52
+11	134	4.3	1	134
+12	13	1.1	1	13
+13	35	0.3	1	35
+14	42	0.1	1	42
+15	30	0.0	1	30
+16	37	0.0	1	37
+17	39	0.0	1	39
+18	4	0.0	1	4
+19	23	0.0	1	23
+20	25	0.0	2	25
+21	9	0.0	2	9
+23	2	0.0	2	2
+24	1	0.0	2	1
+25	4	0.0	2	4
+26	6	0.0	2	6
+27	18	0.0	2	18
+28	158	0.0	2	158
+29	4	0.0	2	4
+
+
+RUN STATISTICS FOR INPUT FILE: SRR30677902_1.fastq.gz
+=============================================
+17969839 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	133004 (0.7%)
+Sequences removed because they were longer than the upper length cutoff:	0 (0.0%)
+Sequences removed because of too many N bases:	0 (0.0%)
+

@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+title: "In Silico Identification of Neoantigens for Personalised Immunotherapy in Glioblastoma"
+authors:
+  - family-names: Amin
+    given-names: Nurul
+message: "If you use this pipeline, please cite the repository."
+repository-code: "https://github.com/Nurulamin6191/00_Discovery_Neoantigens_Glioblastoma"
+keywords: [neoantigen, glioblastoma, RNA-seq, HLA, MHCflurry]

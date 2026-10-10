@@ -1,7 +1,7 @@
 # In Silico Identification of Neoantigens for Personalised Immunotherapy in Glioblastoma
 
-> Repo rename proposed: `Glioblastoma-Neoantigen-Discovery` (shorter, searchable;
-> old URL keeps working via GitHub redirect). See bottom for 1-click steps.
+> Repository renamed to `GBM-Personalized-NeoAntigen-Vaccine` (short, searchable;
+> old URL redirects automatically).
 
 ## Objective
 Build an **evidence-first, end-to-end validated** neoantigen discovery pipeline for
@@ -56,6 +56,6 @@ Tumor-only (no matched normal), chr1 pilot (full-genome scripted, not run here),
 FreeBayes/GATK 19% overlap (caller + reference-naming differences), SDF4 needs
 IGV/Sanger confirmation, NetMHCpan cross-validation pending.
 
-## Rename this repository (1 click, safe)
-GitHub → repo Settings → General → Repository name → `Glioblastoma-Neoantigen-Discovery` → Rename.
-GitHub auto-redirects the old URL. Then: `git remote set-url origin https://github.com/Nurulamin6191/Glioblastoma-Neoantigen-Discovery.git`.
+## Repository address
+Canonical: `https://github.com/Nurulamin6191/GBM-Personalized-NeoAntigen-Vaccine`.
+Then: `git remote set-url origin https://github.com/Nurulamin6191/GBM-Personalized-NeoAntigen-Vaccine.git`.

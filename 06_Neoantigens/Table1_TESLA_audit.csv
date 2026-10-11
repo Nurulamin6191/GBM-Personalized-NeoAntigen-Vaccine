@@ -1,0 +1,11 @@
+rank,gene_symbol,mutation,peptide,P_affinity_le34,P_abundance_TPM,P_netmhcpan_le34,R_agretopicity,R_foreignness,stability,TESLA_presentation_pass
+1,ECT2,L34F,FLIGSTSYV,True,43.37,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+2,CUL4A,R158L,FLFLDLTYV,True,6.7,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+3,AP2M1,G12W,FIYNHKWEV,True,94.95,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+4,MACROH2A1,V52I,YMAAILEYL,True,88.76,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+5,UTP14C,G85V,VLADLLEPV,True,2.61,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+6,MCUB,M248I,YSWDIIEPV,True,43.14,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+7,SLC16A4,A343D,LLSDLAYFI,True,15.65,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+8,CYB561,A209P,WLVGFSPFL,True,4.87,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+9,VPS13B,E1147V,FVIPRPILV,True,3.34,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True
+10,CAND1,C71Y,YLGPLVSKV,True,31.42,True,PENDING (needs WT affinities),PENDING (needs proteome-wide scoring),PENDING (needs NetMHCstabpan),True

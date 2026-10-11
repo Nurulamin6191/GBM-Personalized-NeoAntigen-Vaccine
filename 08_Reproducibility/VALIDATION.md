@@ -103,3 +103,10 @@
 - ALAAAVAAV 6.92 / LLFGYPVYV 3.29 nM (strong, both agree); SYFPEITHI 3,568 nM on
   A*02:06 (non-binder here — it is an A*02:01-family control, never a negative control).
 - (06_Neoantigens/IEDB_api/netmhcpan_ba_A0206.tsv, Fig 11)
+
+## Long-peptide design (this session, design_long_peptides.py)
+- 8/10 Table 1 9mers anchored via WT-reversion in current Ensembl proteins; mutant 25mers built.
+- SLC16A4 A343D + CYB561 A209P UNMAPPED: reference windows absent from all current isoforms
+  (transcript-model drift since original prediction; e.g. CYB561 site shows F not A in longest isoform).
+  9mer binding data stand; long-peptide extension blocked pending original transcript models.
+  This is precisely why pVACtools enforces MANE/canonical/TSL transcript prioritization (see ALTERNATIVE_METHODS.md).
